@@ -5,6 +5,7 @@
 //  Created by Ivan Tilev on 3.10.23.
 //
 
+import CoreML
 import SwiftUI
 
 struct ContentView: View {
