@@ -9,7 +9,7 @@ import CoreML
 import SwiftUI
 
 struct ContentView: View {
-    @State private var wakeUp = Date.now
+    @State private var wakeUp = defaultWakeTime
     @State private var sleepAmount = 0.8
     @State private var coffeeAmount = 0
     
@@ -17,21 +17,34 @@ struct ContentView: View {
     @State private var alertMessage = ""
     @State private var showAlert = false
     
+    static var defaultWakeTime: Date {
+        var components = DateComponents()
+        components.hour = 7
+        components.minute = 0
+        return Calendar.current.date(from: components) ?? Date.now
+    }
+    
     var body: some View {
         NavigationView {
-            VStack {
-                Text("When do you want to get up?")
-                    .font(.headline)
-                DatePicker("Please enter a time", selection: $wakeUp, displayedComponents: .hourAndMinute)
-                    .labelsHidden()
+            Form {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("When do you want to get up?")
+                        .font(.headline)
+                    DatePicker("Please enter a time", selection: $wakeUp, displayedComponents: .hourAndMinute)
+                        .labelsHidden()
+                }
                 
-                Text("Desired amount of sleep")
-                    .font(.headline)
-                Stepper("\(sleepAmount.formatted()) hours", value: $sleepAmount, in: 4...12, step: 0.2)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Desired amount of sleep")
+                        .font(.headline)
+                    Stepper("\(sleepAmount.formatted()) hours", value: $sleepAmount, in: 4...12, step: 0.2)
+                }
                 
-                Text("Daily coffee intate")
-                    .font(.headline)
-                Stepper(coffeeAmount == 1 ? "1 cup": "\(coffeeAmount) cups", value: $coffeeAmount, in: 1...20)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Daily coffee intate")
+                        .font(.headline)
+                    Stepper(coffeeAmount == 1 ? "1 cup": "\(coffeeAmount) cups", value: $coffeeAmount, in: 1...20)
+                }
             }
             .navigationTitle("BetterRest")
             .toolbar {
